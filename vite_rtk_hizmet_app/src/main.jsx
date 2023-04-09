@@ -2,7 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from "./app";
 
-import "bootstrap/dist/css/bootstrap.min.css";
+import 'react-toastify/dist/ReactToastify.css';
+ import "bootstrap/dist/css/bootstrap.min.css";
+ import { ToastContainer, toast } from 'react-toastify';
+
+
 import store from './redux/store';
 import { Provider } from 'react-redux';
 import ThemeContextProvider from './companents/ThemeContext';
