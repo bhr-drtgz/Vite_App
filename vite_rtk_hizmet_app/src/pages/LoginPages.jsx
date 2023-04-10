@@ -1,8 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import useApi from '../hooks/useApi';
+import { toast } from 'react-toastify';
+import {AuthContext} from "../companents/AuthContext"
+
 
 function LoginPages() {
+  const authTokenContextValue=useContext(AuthContext)
   const api = useApi();
 
   const [email, setEmail] = useState('');
@@ -28,6 +32,7 @@ function LoginPages() {
   const onFormSubmit = (event) => {
     event.preventDefault();
 
+
     const dataForm = new FormData(event.target);
     const formJson = Object.fromEntries(dataForm.entries());
 
@@ -35,11 +40,21 @@ function LoginPages() {
 
     api.post('auth/login', formJson)
       .then((res) => {
-        console.log('res', res);
-      })
+        authTokenContextValue.setToken(res.data.data.token)
+         toast("Giriş Başarılı")
+       })
       .catch((err) => {
-        console.log('err', err);
-      });
+        toast.error('🦄 Giriş Yapılamadı Bilgilerinizi Kontrol Ediniz!!!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        });
   };
 
   return (

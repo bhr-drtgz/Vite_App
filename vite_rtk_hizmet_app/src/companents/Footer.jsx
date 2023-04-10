@@ -1,8 +1,13 @@
 import React from 'react'
 import Logo from "../assest/Logo.svg"
+import { useContext } from 'react'
+import {AuthContext} from "../companents/AuthContext"
 
 
 function Footer() {
+  const authContextValue=useContext(AuthContext)
+  console.log(authContextValue)
+
   return (
     <div>
       <footer class="pt-4 my-md-5 pt-md-5 border-top">
@@ -10,6 +15,9 @@ function Footer() {
           <div class="col-12 col-md">
             <img class="mb-2" src={Logo} alt="" width="24" height="19" />
               <small class="d-block mb-3 text-muted">&copy; 2017–2023</small>
+              <small className='text-success fw-bold border-bottom border-danger'>
+                Token : {authContextValue.token}
+               </small>
           </div>
           <div class="col-6 col-md">
             <h5>Features</h5>
