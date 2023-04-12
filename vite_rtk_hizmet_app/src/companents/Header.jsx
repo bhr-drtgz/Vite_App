@@ -1,7 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { AuthContext } from './AuthContext'
 
 function Header() {
+    const userState = useSelector((state) => state.userState)
+    const authTokenContextValue = useContext(AuthContext)
+    const dispach = useDispatch()
+
+    const OnlogOut = () => {
+        event.preventDefault()
+
+        localStorage.removeItem("token");
+        authTokenContextValue.setToken(null);
+        dispach(removeUserData());
+
+    }
     return (
         <div>
             <header>
@@ -14,13 +28,22 @@ function Header() {
                     <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto px-3">
                         <Link class="btn btn-primary me-3 py-2 text-white text-decoration-none mt-3" to="category/test">Kategori Detay</Link>
                         <Link class="btn btn-primary me-3 py-2 text-white text-decoration-none mt-3" to="blogs">Blogs</Link>
-                        <Link class="btn btn-danger me-3 py-2  text-decoration-none mt-3" to="auth/register" >Kayıt Ol</Link>
-                        <Link class="btn btn-success py-2 s text-decoration-none mt-3"to="auth/login">Giriş Yap</Link>
+                        {userState.userData === null ? (
+                            <>
+                                <Link class="btn btn-danger me-3 py-2 text-white text-decoration-none mt-3" to="auth/register">Kayıt Ol</Link>
+                                <Link class="btn btn-success py-2 text-white text-decoration-none mt-3" to="auth/login">Giriş Yap</Link>
+                            </>
+                        ) : (
+                            <>
+                                <label className='btn btn-warning  me-3 mt-3'>
+                                    <i class="fa-solid fa-user"></i>&nbsp;
+                                    {userState.userData.fullname}</label>
+                                <button className='btn btn-danger  me-3 mt-3' onClick={OnlogOut}>
+                                    <i class="fa-solid fa-right-from-bracket"></i> &nbsp;
+                                    Çıkış</button>
+                            </>
+                        )}
                     </nav>
-                </div>
-                <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-                    <h1 class="display-4 fw-normal">Pricing</h1>
-                    <p class="fs-5 text-muted">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>
                 </div>
             </header>
         </div>
